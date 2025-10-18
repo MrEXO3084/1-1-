@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高级社交媒体展示平台(内测)</title>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #7209b7;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gold: #ffd700;
+            --blue: #007bff;
+            --success: #4cc9f0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1e3f5a 0%, #5576d3 100%);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 导航栏 */
+        header {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+        
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: var(--success);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--success);
+            transition: width 0.3s;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: var(--light);
+            border: 2px solid var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background: var(--primary);
+            transform: translateY(-2px);
+        }
+        
+        /* 英雄区域 */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 80px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-content {
+            max-width: 600px;
+            z-index: 2;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #4cc9f0, #4361ee);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1.2;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .hero-btns {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(67, 97, 238, 0.2) 0%, rgba(26, 26, 46, 0) 70%);
+            z-index: 1;
+        }
+        
+        /* 内容区域 */
+        section {
+            padding: 100px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+            font-size: 2.5rem;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .content-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .content-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        }
+        
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+        
+        .content-card h3 {
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        
+        /* 账号展示 */
+        .social-cards {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .social-card {
+            width: 280px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .social-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .social-header {
+            padding: 20px;
+            text-align: center;
+            background: rgba(67, 97, 238, 0.2);
+        }
+        
+        .social-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .social-content {
+            padding: 20px;
+        }
+        
+        .social-stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--success);
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        /* 留言板 */
+        .message-board {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .message-form {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--light);
+            font-size: 1rem;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .messages-container {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        
+        .message {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .user-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        .badge-gold {
+            background: var(--gold);
+            color: var(--dark);
+        }
+        
+        .badge-blue {
+            background: var(--blue);
+            color: white;
+        }
+        
+        .message-time {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        /* 模态框 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            width: 90%;
+            max-width: 500px;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--light);
+            transition: color 0.3s;
+        }
+        
+        .close-modal:hover {
+            color: var(--success);
+        }
+        
+        .modal-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .tab.active {
+            border-bottom: 3px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* 彩蛋 */
+        .easter-egg {
+            position: fixed;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: rgba(76, 201, 240, 0.3);
+            cursor: pointer;
+            z-index: 100;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+        
+        .easter-egg:hover {
+            background: rgba(76, 201, 240, 0.7);
+            transform: scale(1.2);
+        }
+        
+        /* 页脚 */
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 40px 0;
+            text-align: center;
+            margin-top: 60px;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links a {
+            color: var(--light);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--success);
+        }
+        
+        .copyright {
+            opacity: 0.7;
+            margin-top: 20px;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-bg {
+                width: 100%;
+                opacity: 0.3;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">SocialShowcase</div>
+                <div class="nav-links">
+                    <a href="#home">首页</a>
+                    <a href="#about">关于</a>
+                    <a href="#social">社交账号</a>
+                    <a href="#content">内容</a>
+                    <a href="#messages">留言板</a>
+                </div>
+                <div class="auth-buttons">
+                    <button class="btn btn-outline" id="loginBtn">登录</button>
+                    <button class="btn btn-primary" id="registerBtn">注册</button>
+                    <button class="btn btn-outline" id="adminLoginBtn" style="display:none;">管理员入口</button>
+                    <button class="btn btn-outline" id="founderLoginBtn" style="display:none;">站长小家</button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 英雄区域 -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <h1>171L天下第一！</h1>
+                <p>抖音：https://www.douyin.com/user/self?from_tab_name=main</p>
+                <div class="hero-btns">
+                    <button class="btn btn-primary" id="exploreBtn">探索更多</button>
+                    <button class="btn btn-outline" id="learnMoreBtn">了解更多</button>
+                </div>
+            </div>
+            <div class="hero-bg"></div>
+        </div>
+    </section>
+
+    <!-- 关于区域 -->
+    <section id="about">
+        <div class="container">
+            <h2 class="section-title">关于平台</h2>
+            <div class="content-grid">
+                <div class="content-card">
+                    <div class="card-icon">🌟</div>
+                    <h3>高级设计</h3>
+                    <p>采用现代化的UI/UX设计，确保您的社交媒体展示具有专业和高级的外观。</p>
+                </div>
+                <div class="content-card">
+                    <div class="card-icon">🔐</div>
+                    <h3>安全账户</h3>
+                    <p>简化的用户系统，无需邮箱或手机验证。</p>
+                </div>
+                <div class="content-card">
+                    <div class="card-icon">🎮</div>
+                    <h3>互动体验</h3>
+                    <p>平滑滑动，响应式设计，科技满满。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 社交账号展示 -->
+    <section id="social">
+        <div class="container">
+            <h2 class="section-title">我的社交账号</h2>
+            <div class="social-cards">
+                <div class="social-card">
+                    <div class="social-header">
+                        <div class="social-icon">🎵</div>
+                        <h3>抖音</h3>
+                    </div>
+                    <div class="social-content">
+                        <p>分享日常生活、创意短视频和有趣内容。</p>
+                        <div class="social-stats">
+                            <div class="stat">
+                                <div class="stat-value">67</div>
+                                <div class="stat-label">粉丝</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">0</div>
+                                <div class="stat-label">视频</div>
+                            </div>
+                        </div>
+                        <button class="btn btn-outline" style="width:100%;">关注账号</button>
+                    </div>
+                </div>
+                <div class="social-card">
+                    <div class="social-header">
+                        <div class="social-icon">📺</div>
+                        <h3>B站</h3>
+                    </div>
+                    <div class="social-content">
+                        <p>B主页：https://space.bilibili.com/3493127316835138?spm_id_from=333.1007.0.0</p>
+                        <div class="social-stats">
+                            <div class="stat">
+                                <div class="stat-value">2K+</div>
+                                <div class="stat-label">粉丝</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">18</div>
+                                <div class="stat-label">视频</div>
+                            </div>
+                        </div>
+                        <button class="btn btn-outline" style="width:100%;">关注账号</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 留言板 -->
+    <section id="messages">
+        <div class="container">
+            <h2 class="section-title">留言板</h2>
+            <div class="message-board">
+                <div class="message-form" id="messageForm" style="display:none;">
+                    <h3>发表留言</h3>
+                    <div class="form-group">
+                        <textarea class="form-control" id="messageText" rows="4" placeholder="写下你的留言..."></textarea>
+                    </div>
+                    <button class="btn btn-primary" id="submitMessageBtn">提交留言</button>
+                </div>
+                <div class="messages-container" id="messagesContainer">
+                    <!-- 留言将通过JS动态加载 -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="logo">SocialShowcase</div>
+            <div class="footer-links">
+                <a href="#home">首页</a>
+                <a href="#about">关于</a>
+                <a href="#social">社交账号</a>
+                <a href="#content">内容</a>
+                <a href="#messages">留言板</a>
+                <a href="#" id="settingsLink">设置</a>
+            </div>
+            <div class="copyright">
+                &copy; 2023 SocialShowcase. 保留所有权利.
+            </div>
+        </div>
+    </footer>
+
+    <!-- 登录/注册模态框 -->
+    <div class="modal" id="authModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeModal">&times;</span>
+            <div class="modal-tabs">
+                <div class="tab active" data-tab="login">登录</div>
+                <div class="tab" data-tab="register">注册</div>
+                <div class="tab" data-tab="admin" id="adminTab" style="display:none;">管理员登录</div>
+                <div class="tab" data-tab="founder" id="founderTab" style="display:none;">站长登录</div>
+            </div>
+            
+            <div class="tab-content active" id="loginTab">
+                <h3>用户登录</h3>
+                <div class="form-group">
+                    <label for="loginUsername">用户名</label>
+                    <input type="text" id="loginUsername" class="form-control" placeholder="输入用户名">
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">密码</label>
+                    <input type="password" id="loginPassword" class="form-control" placeholder="输入密码">
+                </div>
+                <button class="btn btn-primary" id="loginSubmitBtn" style="width:100%;">登录</button>
+                <p style="text-align:center; margin-top:15px;">
+                    <a href="#" id="forgotPasswordLink">忘记密码?</a>
+                </p>
+            </div>
+            
+            <div class="tab-content" id="registerTab">
+                <h3>用户注册</h3>
+                <div class="form-group">
+                    <label for="registerUsername">用户名</label>
+                    <input type="text" id="registerUsername" class="form-control" placeholder="创建用户名">
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">密码</label>
+                    <input type="password" id="registerPassword" class="form-control" placeholder="创建密码">
+                </div>
+                <div class="form-group">
+                    <label for="registerNickname">昵称</label>
+                    <input type="text" id="registerNickname" class="form-control" placeholder="你的显示名称">
+                </div>
+                <button class="btn btn-primary" id="registerSubmitBtn" style="width:100%;">注册</button>
+            </div>
+            
+            <div class="tab-content" id="adminTabContent">
+                <h3>管理员登录</h3>
+                <div class="form-group">
+                    <label for="adminUsername">管理员账号</label>
+                    <input type="text" id="adminUsername" class="form-control" placeholder="输入管理员账号">
+                </div>
+                <div class="form-group">
+                    <label for="adminPassword">密码</label>
+                    <input type="password" id="adminPassword" class="form-control" placeholder="输入管理员密码">
+                </div>
+                <button class="btn btn-primary" id="adminSubmitBtn" style="width:100%;">管理员登录</button>
+            </div>
+            
+            <div class="tab-content" id="founderTabContent">
+                <h3>站长登录</h3>
+                <div class="form-group">
+                    <label for="founderPassword">站长密码</label>
+                    <input type="password" id="founderPassword" class="form-control" placeholder="输入站长密码">
+                </div>
+                <button class="btn btn-primary" id="founderSubmitBtn" style="width:100%;">进入站长小家</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 彩蛋 -->
+    <div class="easter-egg" style="top:20%; left:5%;" data-egg="1">?</div>
+    <div class="easter-egg" style="top:60%; right:10%;" data-egg="2">?</div>
+    <div class="easter-egg" style="bottom:15%; left:15%;" data-egg="3">?</div>
+
+    <script>
+        // 初始化数据
+        function initializeData() {
+            if (!localStorage.getItem('users')) {
+                const defaultUsers = [
+                    { 
+                        username: 'admin', 
+                        password: 'admin123', 
+                        nickname: '平台管理员',
+                        role: 'admin',
+                        securityQuestion: '我最喜欢的颜色？',
+                        securityAnswer: '蓝色'
+                    },
+                    { 
+                        username: 'founder', 
+                        password: 'founder123', 
+                        nickname: '网站创始人',
+                        role: 'founder',
+                        securityQuestion: '我的出生地？',
+                        securityAnswer: '北京'
+                    }
+                ];
+                localStorage.setItem('users', JSON.stringify(defaultUsers));
+            }
+            
+            if (!localStorage.getItem('messages')) {
+                const defaultMessages = [
+                    {
+                        user: '网站创始人',
+                        role: 'founder',
+                        content: '欢迎来到我的社交媒体展示平台！这里将展示我的抖音、B站等内容，欢迎大家留言互动！',
+                        time: new Date().toLocaleString()
+                    },
+                    {
+                        user: '平台管理员',
+                        role: 'admin',
+                        content: '平台运行正常，如有问题请联系管理员。',
+                        time: new Date().toLocaleString()
+                    }
+                ];
+                localStorage.setItem('messages', JSON.stringify(defaultMessages));
+            }
+            
+            if (!localStorage.getItem('easterEggs')) {
+                const defaultEggs = [
+                    {
+                        id: 1,
+                        title: '隐藏的问候',
+                        content: '恭喜你找到了第一个彩蛋！这是一个隐藏的问候。',
+                        type: 'text'
+                    },
+                    {
+                        id: 2,
+                        title: '秘密视频',
+                        content: '<video width="100%" controls><source src="https://example.com/secret-video.mp4" type="video/mp4">你的浏览器不支持视频播放。</video>',
+                        type: 'video'
+                    },
+                    {
+                        id: 3,
+                        title: '隐藏图片',
+                        content: '<img src="https://via.placeholder.com/400x300/4361ee/ffffff?text=隐藏图片" width="100%" alt="隐藏图片">',
+                        type: 'image'
+                    }
+                ];
+                localStorage.setItem('easterEggs', JSON.stringify(defaultEggs));
+            }
+            
+            // 显示管理员和创始人登录入口
+            document.getElementById('adminLoginBtn').style.display = 'inline-block';
+            document.getElementById('founderLoginBtn').style.display = 'inline-block';
+            document.getElementById('adminTab').style.display = 'block';
+            document.getElementById('founderTab').style.display = 'block';
+        }
+
+        // 用户认证功能
+        function setupAuth() {
+            const authModal = document.getElementById('authModal');
+            const loginBtn = document.getElementById('loginBtn');
+            const registerBtn = document.getElementById('registerBtn');
+            const adminLoginBtn = document.getElementById('adminLoginBtn');
+            const founderLoginBtn = document.getElementById('founderLoginBtn');
+            const closeModal = document.getElementById('closeModal');
+            const tabs = document.querySelectorAll('.tab');
+            const loginSubmitBtn = document.getElementById('loginSubmitBtn');
+            const registerSubmitBtn = document.getElementById('registerSubmitBtn');
+            const adminSubmitBtn = document.getElementById('adminSubmitBtn');
+            const founderSubmitBtn = document.getElementById('founderSubmitBtn');
+            const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+            const settingsLink = document.getElementById('settingsLink');
+            
+            // 打开模态框
+            function openModal(tab = 'login') {
+                authModal.style.display = 'flex';
+                switchTab(tab);
+            }
+            
+            // 切换标签页
+            function switchTab(tabName) {
+                tabs.forEach(tab => {
+                    if (tab.dataset.tab === tabName) {
+                        tab.classList.add('active');
+                    } else {
+                        tab.classList.remove('active');
+                    }
+                });
+                
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    if (content.id === tabName + 'Tab') {
+                        content.classList.add('active');
+                    } else {
+                        content.classList.remove('active');
+                    }
+                });
+            }
+            
+            // 事件监听
+            loginBtn.addEventListener('click', () => openModal('login'));
+            registerBtn.addEventListener('click', () => openModal('register'));
+            adminLoginBtn.addEventListener('click', () => openModal('admin'));
+            founderLoginBtn.addEventListener('click', () => openModal('founder'));
+            closeModal.addEventListener('click', () => authModal.style.display = 'none');
+            settingsLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                openModal('login');
+            });
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => switchTab(tab.dataset.tab));
+            });
+            
+            // 登录功能
+            loginSubmitBtn.addEventListener('click', () => {
+                const username = document.getElementById('loginUsername').value;
+                const password = document.getElementById('loginPassword').value;
+                
+                if (!username || !password) {
+                    alert('请输入用户名和密码');
+                    return;
+                }
+                
+                const users = JSON.parse(localStorage.getItem('users'));
+                const user = users.find(u => u.username === username && u.password === password);
+                
+                if (user) {
+                    localStorage.setItem('currentUser', JSON.stringify(user));
+                    authModal.style.display = 'none';
+                    updateUIForUser(user);
+                    alert(`欢迎回来，${user.nickname}！`);
+                } else {
+                    alert('用户名或密码错误');
+                }
+            });
+            
+            // 注册功能
+            registerSubmitBtn.addEventListener('click', () => {
+                const username = document.getElementById('registerUsername').value;
+                const password = document.getElementById('registerPassword').value;
+                const nickname = document.getElementById('registerNickname').value;
+                
+                if (!username || !password || !nickname) {
+                    alert('请填写所有字段');
+                    return;
+                }
+                
+                const users = JSON.parse(localStorage.getItem('users'));
+                
+                if (users.find(u => u.username === username)) {
+                    alert('用户名已存在');
+                    return;
+                }
+                
+                const newUser = {
+                    username,
+                    password,
+                    nickname,
+                    role: 'user'
+                };
+                
+                users.push(newUser);
+                localStorage.setItem('users', JSON.stringify(users));
+                localStorage.setItem('currentUser', JSON.stringify(newUser));
+                
+                authModal.style.display = 'none';
+                updateUIForUser(newUser);
+                alert(`注册成功，欢迎 ${nickname}！`);
+            });
+            
+            // 管理员登录
+            adminSubmitBtn.addEventListener('click', () => {
+                const username = document.getElementById('adminUsername').value;
+                const password = document.getElementById('adminPassword').value;
+                
+                if (!username || !password) {
+                    alert('请输入管理员账号和密码');
+                    return;
+                }
+                
+                const users = JSON.parse(localStorage.getItem('users'));
+                const user = users.find(u => u.username === username && u.password === password && u.role === 'admin');
+                
+                if (user) {
+                    localStorage.setItem('currentUser', JSON.stringify(user));
+                    authModal.style.display = 'none';
+                    updateUIForUser(user);
+                    alert(`管理员 ${user.nickname} 登录成功！`);
+                } else {
+                    alert('管理员账号或密码错误');
+                }
+            });
+            
+            // 创始人登录
+            founderSubmitBtn.addEventListener('click', () => {
+                const password = document.getElementById('founderPassword').value;
+                
+                if (!password) {
+                    alert('请输入站长密码');
+                    return;123456
+                }
+                
+                const users = JSON.parse(localStorage.getItem('users'));
+                const user = users.find(u => u.password === password && u.role === 'founder');
+                
+                if (user) {
+                    localStorage.setItem('currentUser', JSON.stringify(user));
+                    authModal.style.display = 'none';
+                    updateUIForUser(user);
+                    alert(`欢迎站长 ${user.nickname}！`);
+                } else {
+                    alert('站长密码错误');
+                }
+            });
+            
+            // 忘记密码
+            forgotPasswordLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                alert('请联系管理员重置密码');
+            });
+            
+            // 检查是否已登录
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (currentUser) {
+                updateUIForUser(currentUser);
+            }
+        }
+
+        // 更新UI以反映用户状态
+        function updateUIForUser(user) {
+            const authButtons = document.querySelector('.auth-buttons');
+            const messageForm = document.getElementById('messageForm');
+            
+            if (user) {
+                authButtons.innerHTML = `
+                    <span style="margin-right:15px;">欢迎，${user.nickname}</span>
+                    ${user.role === 'admin' ? '<span class="user-badge badge-blue">管理员</span>' : ''}
+                    ${user.role === 'founder' ? '<span class="user-badge badge-gold">站长</span>' : ''}
+                    <button class="btn btn-outline" id="logoutBtn">退出</button>
+                `;
+                
+                messageForm.style.display = 'block';
+                
+                document.getElementById('logoutBtn').addEventListener('click', () => {
+                    localStorage.removeItem('currentUser');
+                    location.reload();
+                });
+            }
+            
+            loadMessages();
+        }
+
+        // 留言板功能
+        function setupMessageBoard() {
+            const submitMessageBtn = document.getElementById('submitMessageBtn');
+            
+            submitMessageBtn.addEventListener('click', () => {
+                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                if (!currentUser) {
+                    alert('请先登录');
+                    return;
+                }
+                
+                const messageText = document.getElementById('messageText').value;
+                if (!messageText) {
+                    alert('请输入留言内容');
+                    return;
+                }
+                
+                const messages = JSON.parse(localStorage.getItem('messages'));
+                const newMessage = {
+                    user: currentUser.nickname,
+                    role: currentUser.role,
+                    content: messageText,
+                    time: new Date().toLocaleString()
+                };
+                
+                messages.push(newMessage);
+                localStorage.setItem('messages', JSON.stringify(messages));
+                
+                document.getElementById('messageText').value = '';
+                loadMessages();
+                
+                alert('留言发布成功！');
+            });
+        }
+
+        // 加载留言
+        function loadMessages() {
+            const messagesContainer = document.getElementById('messagesContainer');
+            const messages = JSON.parse(localStorage.getItem('messages'));
+            
+            messagesContainer.innerHTML = '';
+            
+            messages.forEach(msg => {
+                const messageEl = document.createElement('div');
+                messageEl.className = 'message';
+                
+                let badge = '';
+                if (msg.role === 'admin') {
+                    badge = '<span class="user-badge badge-blue">管理员</span>';
+                } else if (msg.role === 'founder') {
+                    badge = '<span class="user-badge badge-gold">站长</span>';
+                }
+                
+                messageEl.innerHTML = `
+                    <div class="message-header">
+                        <div>
+                            <strong>${msg.user}</strong>
+                            ${badge}
+                        </div>
+                        <div class="message-time">${msg.time}</div>
+                    </div>
+                    <div class="message-content">${msg.content}</div>
+                `;
+                
+                messagesContainer.appendChild(messageEl);
+            });
+        }
+
+       
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeData();
+            setupAuth();
+            setupMessageBoard();
+            setupEasterEggs();
+            
+            // 平滑滚动
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // 探索按钮
+            document.getElementById('exploreBtn').addEventListener('click', () => {
+                document.querySelector('#about').scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            // 了解更多按钮
+            document.getElementById('learnMoreBtn').addEventListener('click', () => {
+                document.querySelector('#social').scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>
